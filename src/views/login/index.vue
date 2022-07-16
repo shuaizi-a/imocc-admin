@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <el-form class="login-form" ref="ruleFormRef" :model="loginFrom" :rules="loginRules">
+    <el-form class="login-form" ref="loginFromRef" :model="loginForm" :rules="loginRules">
       <div class="title-container">
         <h3 class="title">用户登录</h3>
       </div>
@@ -9,20 +9,20 @@
         <span class="svg-container">
           <svg-icon icon="user"></svg-icon>
         </span>
-        <el-input v-model="loginFrom.username" placeholder="username" name="username" type="text" clearable />
+        <el-input v-model="loginForm.username" placeholder="username" name="username" type="text" clearable />
       </el-form-item>
 
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon="password"></svg-icon>
         </span>
-        <el-input :type="passwordType" v-model="loginFrom.password" placeholder="password" name="password" />
+        <el-input :type="passwordType" v-model="loginForm.password" placeholder="password" name="password" />
         <span class="show-pwd">
           <svg-icon :icon="passwordType === 'password' ? 'eye' : 'eye-open'" @click="onChangePwdType"></svg-icon>
         </span>
       </el-form-item>
 
-      <el-button type="primary" style="width: 100%; margin-bottom: 30px" @click="submit()"> 登录 </el-button>
+      <el-button type="primary" :loading="loading" style="width: 100%; margin-bottom: 30px" @click="handleLogin()"> 登录 </el-button>
     </el-form>
   </div>
 </template>
@@ -30,13 +30,13 @@
 <script setup>
 import { ref } from 'vue';
 import { validatePassword } from './rules';
+import { useStore } from 'vuex';
 
 // 数据源
-const loginFrom = ref({
+const loginForm = ref({
   username: 'super-admin',
   password: '123456'
 });
-const ruleFormRef = ref('');
 
 // 验证规则
 const loginRules = ref({
@@ -56,9 +56,25 @@ const loginRules = ref({
   ]
 });
 
-const submit = () => {
-  ruleFormRef.value.validate((val) => {
-    console.log(val);
+// 登录动作处理
+const loading = ref(false);
+const loginFromRef = ref(null);
+const store = useStore();
+const handleLogin = () => {
+  loginFromRef.value.validate((valid) => {
+    if (!valid) return;
+
+    loading.value = true;
+    store
+      .dispatch('user/login', loginForm.value)
+      .then(() => {
+        loading.value = false;
+        // TODO: 登录后操作
+      })
+      .catch((err) => {
+        console.log(err);
+        loading.value = false;
+      });
   });
 };
 
@@ -105,6 +121,10 @@ $cursor: #fff;
       height: 47px;
       width: 85%;
 
+      &__wrapper{
+        width: 100%;
+      }
+
       input {
         background: transparent;
         border: 0px;
@@ -112,8 +132,21 @@ $cursor: #fff;
         border-radius: 0px;
         padding: 12px 5px 12px 15px;
         color: $light_gray;
-        line-height: 47px;
+        height: 47px;
         caret-color: $cursor;
+      }
+    }
+  }
+
+  .tips {
+    font-size: 16px;
+    line-height: 28px;
+    color: #fff;
+    margin-bottom: 10px;
+
+    span {
+      &:first-of-type {
+        margin-right: 16px;
       }
     }
   }
@@ -134,6 +167,17 @@ $cursor: #fff;
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;
+    }
+
+    ::v-deep .lang-select {
+      position: absolute;
+      top: 4px;
+      right: 0;
+      background-color: white;
+      font-size: 22px;
+      padding: 4px;
+      border-radius: 4px;
+      cursor: pointer;
     }
   }
 
