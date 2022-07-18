@@ -16,7 +16,7 @@
         <span class="svg-container">
           <svg-icon icon="password"></svg-icon>
         </span>
-        <el-input :type="passwordType" v-model="loginForm.password" placeholder="password" name="password" />
+        <el-input :type="passwordType" v-model="loginForm.password" placeholder="password" name="password" clearable />
         <span class="show-pwd">
           <svg-icon :icon="passwordType === 'password' ? 'eye' : 'eye-open'" @click="onChangePwdType"></svg-icon>
         </span>
@@ -31,6 +31,7 @@
 import { ref } from 'vue';
 import { validatePassword } from './rules';
 import { useStore } from 'vuex';
+const store = useStore();
 
 // 数据源
 const loginForm = ref({
@@ -59,22 +60,19 @@ const loginRules = ref({
 // 登录动作处理
 const loading = ref(false);
 const loginFromRef = ref(null);
-const store = useStore();
 const handleLogin = () => {
   loginFromRef.value.validate((valid) => {
     if (!valid) return;
 
     loading.value = true;
-    store
-      .dispatch('user/login', loginForm.value)
-      .then(() => {
-        loading.value = false;
-        // TODO: 登录后操作
-      })
-      .catch((err) => {
-        console.log(err);
-        loading.value = false;
-      });
+
+    try {
+      store.dispatch('user/login', loginForm.value);
+    } catch (error) {
+      console.log(error);
+    }
+
+    loading.value = false;
   });
 };
 
@@ -121,7 +119,7 @@ $cursor: #fff;
       height: 47px;
       width: 85%;
 
-      &__wrapper{
+      &__wrapper {
         width: 100%;
       }
 
