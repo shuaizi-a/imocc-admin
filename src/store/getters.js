@@ -1,3 +1,5 @@
+import variables from '@/styles/variables.scss';
+
 const getters = {
   token: (state) => state.user.token,
   /**
@@ -9,6 +11,8 @@ const getters = {
   },
   userInfo: (state) => {
     return state.user.userInfo;
-  }
+  },
+  // 主题变量
+  cssVar: (state) => variables
 };
 export default getters;

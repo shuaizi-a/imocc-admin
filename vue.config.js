@@ -20,6 +20,8 @@ module.exports = {
       .end();
   },
   devServer: {
+    // 启动项目，自动打开网页
+    open: true,
     // 配置反向代理
     proxy: {
       // 当地址中有/api的时候会触发代理机制
