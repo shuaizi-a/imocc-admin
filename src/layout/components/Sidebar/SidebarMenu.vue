@@ -1,6 +1,7 @@
 <template>
   <!-- 一级 menu 菜单 -->
   <el-menu
+    :collapse="!$store.getters.sidebarOpened"
     :background-color="$store.getters.cssVar.menuBg"
     :text-color="$store.getters.cssVar.menuText"
     :active-text-color="$store.getters.cssVar.menuActiveText"
@@ -19,14 +20,14 @@ import { filterRouters, generateMenus } from '@/utils/route';
 import SidebarItem from './SidebarItem.vue';
 
 const router = useRouter();
+
 const routes = computed(() => {
   const filterRoutes = filterRouters(router.getRoutes());
   return generateMenus(filterRoutes);
 });
-
+console.log('router.currentRoute', router.currentRoute);
 // 计算高亮 menu 的方法
 const activeMenu = computed(() => {
-  const { path } = router;
-  return path;
+  return router.currentRoute.value.path;
 });
 </script>

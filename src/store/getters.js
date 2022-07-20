@@ -13,6 +13,8 @@ const getters = {
     return state.user.userInfo;
   },
   // 主题变量
-  cssVar: (state) => variables
+  cssVar: (state) => variables,
+  // menu菜单栏伸缩
+  sidebarOpened: (state) => state.app.sidebarOpened
 };
 export default getters;

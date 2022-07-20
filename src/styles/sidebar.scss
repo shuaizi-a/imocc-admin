@@ -19,8 +19,7 @@
 
     // 重置 element-plus 的css
     .horizontal-collapse-transition {
-      transition: 0s width ease-in-out, 0s padding-left ease-in-out,
-        0s padding-right ease-in-out;
+      transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
     }
 
     .scrollbar-wrapper {
@@ -63,8 +62,8 @@
     }
 
     .sub-el-icon {
-      margin-right: 12px;
-      margin-left: -2px;
+      margin-right: 10px;
+      margin-left: -4px;
     }
 
     .el-menu {

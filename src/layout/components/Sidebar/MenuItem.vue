@@ -1,5 +1,7 @@
 <template>
-  <el-icon v-if="icon.includes('el-icon')" class="sub-el-icon" :class="icon"></el-icon>
+  <el-icon v-if="/^[A-Z][A-z]*$/.test(icon)" class="sub-el-icon" :size="14">
+    <component :is="icon" />
+  </el-icon>
   <svg-icon v-else :icon="icon"></svg-icon>
   <span>{{ title }}</span>
 </template>
