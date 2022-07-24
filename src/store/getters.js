@@ -15,6 +15,8 @@ const getters = {
   // 主题变量
   cssVar: (state) => variables,
   // menu菜单栏伸缩
-  sidebarOpened: (state) => state.app.sidebarOpened
+  sidebarOpened: (state) => state.app.sidebarOpened,
+  // 获取当前语言
+  language: (state) => state.app.language
 };
 export default getters;
